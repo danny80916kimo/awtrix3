@@ -34,6 +34,7 @@ private:
     bool showingText = false;
     uint8_t workingFrame = 0;
     unsigned long lastFrameToggle = 0;
+    bool dirty = true;
 
     void drawGhost(const uint8_t frame[8][8], uint32_t color);
     void drawPercentage(int pct, uint32_t color);

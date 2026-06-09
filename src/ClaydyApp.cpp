@@ -307,6 +307,7 @@ void ClaydyApp_::updateState(const char *json)
         state = newState;
         stateChangeTime = millis();
         showingText = true;
+        dirty = true;
 
         if (newState == CLAUDY_DONE)
         {
@@ -314,6 +315,10 @@ void ClaydyApp_::updateState(const char *json)
         }
     }
 
+    if (pct != contextPct)
+    {
+        dirty = true;
+    }
     contextPct = pct;
     lastUpdateTime = millis();
 }
@@ -335,6 +340,7 @@ void ClaydyApp_::tick()
     if (showingText && (now - stateChangeTime > TEXT_DURATION))
     {
         showingText = false;
+        dirty = true;
     }
 
     // Toggle working animation frame
@@ -342,7 +348,11 @@ void ClaydyApp_::tick()
     {
         workingFrame = 1 - workingFrame;
         lastFrameToggle = now;
+        dirty = true;
     }
+
+    if (!dirty) return;
+    dirty = false;
 
     // Draw
     DisplayManager.clearMatrix();
