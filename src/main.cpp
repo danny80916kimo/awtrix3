@@ -38,6 +38,7 @@
 #include "ServerManager.h"
 #include "Globals.h"
 #include "UpdateManager.h"
+#include "ClaydyApp.h"
 #include "timer.h"
 
 TaskHandle_t taskHandle;
@@ -114,8 +115,34 @@ void setup()
   DisplayManager.setBrightness(BRIGHTNESS);
 }
 
+// Claudy Serial input buffer
+static char serialBuf[256];
+static int serialBufPos = 0;
+
+void processSerialInput()
+{
+  while (Serial.available())
+  {
+    char c = Serial.read();
+    if (c == '\n')
+    {
+      serialBuf[serialBufPos] = '\0';
+      if (serialBufPos > 0)
+      {
+        ClaydyApp.updateState(serialBuf);
+      }
+      serialBufPos = 0;
+    }
+    else if (serialBufPos < (int)sizeof(serialBuf) - 1)
+    {
+      serialBuf[serialBufPos++] = c;
+    }
+  }
+}
+
 void loop()
 {
+  processSerialInput();
   timer_tick();
   ServerManager.tick();
   DisplayManager.tick();

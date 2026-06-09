@@ -22,6 +22,7 @@
 #include <HTTPClient.h>
 #include "base64.hpp"
 #include "Games/GameManager.h"
+#include "ClaydyApp.h"
 
 unsigned long lastArtnetStatusTime = 0;
 const int numberOfChannels = 256 * 3;
@@ -1218,6 +1219,10 @@ void DisplayManager_::tick()
     GameManager.tick();
     matrix->show();
     memcpy(ledsCopy, leds, sizeof(leds));
+  }
+  else if (ClaydyApp.isActive())
+  {
+    ClaydyApp.tick();
   }
   else if (AP_MODE)
   {
