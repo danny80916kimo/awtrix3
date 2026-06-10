@@ -309,10 +309,11 @@ void ClaydyApp_::updateState(const char *json)
         showingText = true;
         dirty = true;
 
-        if (newState == CLAUDY_DONE)
-        {
-            PeripheryManager.playRTTTLString("done:d=4,o=6,b=200:16e,16g,8a");
-        }
+        // Done-state sound notification (disabled — uncomment to re-enable)
+        // if (newState == CLAUDY_DONE)
+        // {
+        //     PeripheryManager.playRTTTLString("done:d=4,o=6,b=200:16e,16g,8a");
+        // }
     }
 
     if (pct != contextPct)
